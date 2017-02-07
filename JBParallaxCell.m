@@ -45,10 +45,11 @@
 
 - (void)cellOnTableView:(UITableView *)tableView didScrollOnView:(UIView *)view
 {
-    CGRect rectInSuperview = [tableView convertRect:self.frame toView:view];
     
-    float distanceFromCenter = CGRectGetHeight(view.frame)/2 - CGRectGetMinY(rectInSuperview);
-    float difference = CGRectGetHeight(self.parallaxImage.frame) - CGRectGetHeight(self.frame);
+    CGRect rectInSuperview = [self convertRect:self.parallaxImage.superview.frame toView:view]; // get the view that holds the image 
+    
+    float distanceFromCenter = view.center.y - CGRectGetMinY(rectInSuperview); // no need to make equation hight/2 the center is already calculated using the view.center
+    float difference = CGRectGetHeight(self.parallaxImage.frame) - CGRectGetHeight(self.parallaxImage.superview.frame); // the superview is the mask view that hides the top and down edges it will be useful in case the image is a part of the cell not taking the entire cell
     float move = (distanceFromCenter / CGRectGetHeight(view.frame)) * difference;
     
     CGRect imageRect = self.parallaxImage.frame;
